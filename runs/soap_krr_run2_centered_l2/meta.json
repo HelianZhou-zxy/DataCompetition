@@ -1,0 +1,75 @@
+{
+  "soap": {
+    "rcut": 5.0,
+    "nmax": 8,
+    "lmax": 6,
+    "sigma": 0.4,
+    "pooling": "sum"
+  },
+  "krr": {
+    "alpha": 1e-05,
+    "kernel": "linear"
+  },
+  "y_centering": true,
+  "l2_normalize": true,
+  "cv": {
+    "1e-07": {
+      "mean_mae": 0.6337364350667372,
+      "std": 0.04934660932959053,
+      "nfolds": 5
+    },
+    "5e-07": {
+      "mean_mae": 0.6351935539220015,
+      "std": 0.04832556146933787,
+      "nfolds": 5
+    },
+    "1e-06": {
+      "mean_mae": 0.6345995825650166,
+      "std": 0.04763364038619272,
+      "nfolds": 5
+    },
+    "5e-06": {
+      "mean_mae": 0.6315083092214779,
+      "std": 0.044065765627487645,
+      "nfolds": 5
+    },
+    "1e-05": {
+      "mean_mae": 0.6305623459606882,
+      "std": 0.04119909853498912,
+      "nfolds": 5
+    },
+    "5e-05": {
+      "mean_mae": 0.6337953255337482,
+      "std": 0.038440723876133814,
+      "nfolds": 5
+    },
+    "0.0001": {
+      "mean_mae": 0.636083975038398,
+      "std": 0.03810342188171274,
+      "nfolds": 5
+    },
+    "0.0005": {
+      "mean_mae": 0.6397537352898031,
+      "std": 0.03256414520945904,
+      "nfolds": 5
+    },
+    "0.001": {
+      "mean_mae": 0.6408322402844833,
+      "std": 0.030141408986157973,
+      "nfolds": 5
+    },
+    "0.005": {
+      "mean_mae": 0.6458760407035979,
+      "std": 0.029480049326356193,
+      "nfolds": 5
+    }
+  },
+  "counts": {
+    "n_total": 993,
+    "n_train_all": 839,
+    "n_test": 154,
+    "n_features": 252,
+    "used_folds": 5
+  },
+  "notes": "Feature L2-normalization + target centering via TransformedTargetRegressor."
+}

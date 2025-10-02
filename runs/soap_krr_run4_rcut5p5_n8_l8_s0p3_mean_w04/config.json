@@ -1,0 +1,32 @@
+{
+  "energies_csv": "D:\\DataComp\\DataCompetition\\data\\preproc_out\\energies_nohash.csv",
+  "summary_json": "D:\\DataComp\\DataCompetition\\data\\preproc_out\\summary.json",
+  "cv_folds_json": "D:\\DataComp\\DataCompetition\\data\\preproc_out\\cv_folds_fixed.json",
+  "test_ids_json": "D:\\DataComp\\DataCompetition\\data\\preproc_out\\test_ids_nohash.json",
+  "xyz_root": "D:\\DataComp\\DataCompetition\\data\\raw\\Au20_OPT_1000",
+  "source_mode": "dir",
+  "id_mode": "filename",
+  "index_base": 0,
+  "rcut": 5.5,
+  "nmax": 8,
+  "lmax": 8,
+  "sigma": 0.3,
+  "pooling": "mean",
+  "alpha_grid": [
+    1e-07,
+    5e-07,
+    1e-06,
+    5e-06,
+    1e-05,
+    5e-05,
+    0.0001,
+    0.0005,
+    0.001,
+    0.005
+  ],
+  "exclude_outliers": false,
+  "use_outlier_weights": true,
+  "outlier_weight": 0.4,
+  "outlier_col": "is_outlier",
+  "out_dir": "D:\\DataComp\\DataCompetition\\runs\\soap_krr_run4_rcut5p5_n8_l8_s0p3_mean_w04"
+}

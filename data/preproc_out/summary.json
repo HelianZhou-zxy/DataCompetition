@@ -1,0 +1,16 @@
+{
+  "num_structures": 999,
+  "num_groups": 968,
+  "emin": -1557.20946,
+  "E_mean": -1551.2495687587586,
+  "E_std": 2.875498361175742,
+  "DeltaE_mean": 5.959891241241273,
+  "DeltaE_std": 2.875498361175741,
+  "bucket_counts": {
+    "mid": 499,
+    "high": 250,
+    "low": 250
+  },
+  "outliers_high_z3": 6,
+  "test_size": 155
+}

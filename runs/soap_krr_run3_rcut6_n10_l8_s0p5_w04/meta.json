@@ -1,0 +1,77 @@
+{
+  "soap": {
+    "rcut": 6.0,
+    "nmax": 10,
+    "lmax": 8,
+    "sigma": 0.5,
+    "pooling": "sum"
+  },
+  "krr": {
+    "alpha": 0.001,
+    "kernel": "linear"
+  },
+  "y_centering": true,
+  "l2_normalize": true,
+  "cv": {
+    "1e-07": {
+      "mean_mae": 0.653439832617784,
+      "std": 0.036094955605234104,
+      "nfolds": 5
+    },
+    "5e-07": {
+      "mean_mae": 0.6477006433431123,
+      "std": 0.036459191616240345,
+      "nfolds": 5
+    },
+    "1e-06": {
+      "mean_mae": 0.6462453055198741,
+      "std": 0.03699457268936334,
+      "nfolds": 5
+    },
+    "5e-06": {
+      "mean_mae": 0.6468213976050053,
+      "std": 0.03096331002465247,
+      "nfolds": 5
+    },
+    "1e-05": {
+      "mean_mae": 0.6461354421988208,
+      "std": 0.02771755229604068,
+      "nfolds": 5
+    },
+    "5e-05": {
+      "mean_mae": 0.6438802707204223,
+      "std": 0.02805253373720034,
+      "nfolds": 5
+    },
+    "0.0001": {
+      "mean_mae": 0.6439769466744684,
+      "std": 0.03249509552054442,
+      "nfolds": 5
+    },
+    "0.0005": {
+      "mean_mae": 0.6411283566624548,
+      "std": 0.04813379194491996,
+      "nfolds": 5
+    },
+    "0.001": {
+      "mean_mae": 0.6408822146057958,
+      "std": 0.05159274734308744,
+      "nfolds": 5
+    },
+    "0.005": {
+      "mean_mae": 0.6418347294033495,
+      "std": 0.05201476361569166,
+      "nfolds": 5
+    }
+  },
+  "counts": {
+    "n_total": 999,
+    "n_train_all": 844,
+    "n_test": 155,
+    "n_features": 495,
+    "used_folds": 5
+  },
+  "notes": "Feature L2-normalization + target centering via TransformedTargetRegressor.",
+  "use_outlier_weights": true,
+  "outlier_weight": 0.4
+}

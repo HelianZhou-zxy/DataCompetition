@@ -1,0 +1,22 @@
+{
+  "base_id": "350",
+  "model_path": "D:\\DataComp\\DataCompetition\\runs\\gnn_schnet_kd\\fold1_batched\\model_fold1.pt",
+  "E0": 0.3637695908546448,
+  "k_list": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "sigma_list": [
+    0.01,
+    0.02,
+    0.03,
+    0.05,
+    0.08
+  ],
+  "repeats": 50,
+  "sigma_site": 0.02,
+  "dmin": 2.2,
+  "seed": 2025
+}
