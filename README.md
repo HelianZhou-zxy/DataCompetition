@@ -373,7 +373,7 @@ cd DataCompetition
 4.  在 `notebooks` 目录下会生成一个名为 `top1_structure.xyz` 的新文件，您可以使用VMD等软件打开它以进行三维可视化。
 5.  **图3：** 基态异构体的**径向分布函数g(r)图**，图中会标出经数据驱动选择的分析截断半径 `rcut_analysis`。
 6.  **表2：** 一个包含Top-10最稳定异构体的**多维度结构指标分析表格**。
-```
+
 
 
 # Task 3 — Sensitivity Analysis via Local Structural Perturbation
