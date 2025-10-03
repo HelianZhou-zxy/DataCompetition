@@ -299,4 +299,170 @@ SET PYTHONNOUSERSITE=1
 
 ---
 
-如需我把 README 直接改成英文版、或把你的 **图表/表格自动化绘制**脚本也写入 README（一步出图），告诉我你想要的风格就行。
+# **如何复现任务二（Task 2）的分析**
+
+本节提供了分步说明，用于完整复现“任务二：稳定结构分析与表征”中的所有数据处理、分析和可视化。
+
+#### **先决条件**
+
+1.  **Conda:** 您的系统中必须安装有 Anaconda 或 Miniconda，用于环境管理。
+2.  **Git:** 您的系统中必须安装有 Git，用于克隆代码仓库。
+3.  **分子可视化软件 (可选):** 推荐安装 [VMD](https://www.ks.uiuc.edu/Research/vmd/) 或 [OVITO](https://www.ovito.org/) 等软件，用于查看输出的 `.xyz` 结构文件。
+
+#### **第一步：克隆指定分支的项目仓库**
+
+本项目的完整代码位于 `feat/all-except-env` 分支。请使用以下命令克隆此特定分支：
+
+```bash
+# 克隆指定分支 (-b feat/all-except-env) 到本地文件夹 DataCompetition
+git clone -b feat/all-except-env https://github.com/HelianZhou-zxy/DataCompetition.git
+
+# 进入项目目录
+cd DataCompetition
+```
+
+#### **第二步：设置Python虚拟环境**
+
+所有项目依赖项均通过 Conda 虚拟环境进行管理，以保证环境隔离和可复现性。
+
+1.  **创建并激活 Conda 环境:**
+    ```bash
+    conda create --name au20_env python=3.11 -y
+    conda activate au20_env
+    ```
+
+2.  **安装所有必需的依赖包:**
+    `requirements.txt` 文件中包含了项目所需的所有库及其版本。
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+#### **第三步：放置原始数据**
+
+分析代码期望在特定目录下找到原始的 `.xyz` 数据文件。
+
+1.  获取包含999个Au₂₀异构体的 `.xyz` 文件的数据集。
+2.  将所有 `.xyz` 文件放置到项目内的以下目录中：`data/raw/Au20_OPT_1000/`。
+
+#### **第四步：执行分析代码**
+
+任务二的全部数据分析流程都封装在一个 Jupyter Notebook 中。
+
+1.  **启动 Jupyter Lab:**
+    在您的终端中（请确保 `au20_env` 环境已被激活），运行以下命令：
+    ```bash
+    jupyter lab
+    ```
+
+2.  **打开 Notebook:**
+    在 Jupyter Lab 的文件浏览器界面中，导航至 `notebooks/` 目录，并打开 `01_initial_data_exploration.ipynb` 文件。
+
+3.  **确认数据路径:**
+    请检查 Notebook 第二个代码单元格中的 `RAW_DATA_PATH` 变量是否已正确设置为 `../data/raw/Au20_OPT_1000/`。
+
+4.  **运行分析:**
+    按顺序执行 Notebook 中的所有代码单元格。您可以通过点击菜单栏的 `Run` -> `Run All Cells` 来一键运行。
+
+#### **预期产出**
+
+成功运行 Notebook 后，您将在 Notebook 的输出中直接看到以下内容：
+
+1.  关于能量分布的**统计指标摘要**（文本输出）。
+2.  **图1：** Au₂₀异构体能量分布的**直方图与KDE曲线**。
+3.  能量最低的**Top-10个异构体的ID和能量值列表**。
+4.  在 `notebooks` 目录下会生成一个名为 `top1_structure.xyz` 的新文件，您可以使用VMD等软件打开它以进行三维可视化。
+5.  **图3：** 基态异构体的**径向分布函数g(r)图**，图中会标出经数据驱动选择的分析截断半径 `rcut_analysis`。
+6.  **表2：** 一个包含Top-10最稳定异构体的**多维度结构指标分析表格**。
+```
+
+
+# Task 3 — Sensitivity Analysis via Local Structural Perturbation
+
+本任务在已确定的**代表性最低能结构**（本项目中为 `350.xyz`）附近，施加**局部几何扰动**，用训练好的**Task 1 模型**（此处以 KD-only 的 SchNet 为例）预测能量变化，并进行稳定性与鲁棒性分析。
+
+> 产出包括：扰动-能量关系的统计图表、整体/逐原子的“刚度”指标（stiffness），以及 3D 颜色热力图可视化（VMD/ASE）。
+
+---
+
+## 依赖
+
+* 与 Task 1 相同：`torch`, `numpy`, `pandas`, `tqdm`, `matplotlib`, `ase` 等
+* 已训练好的 GNN 模型权重（示例：`runs/gnn_schnet_kd/fold1_batched/model_fold1.pt`）
+
+---
+
+## 输入与默认配置
+
+* **基准结构**：`data/raw/Au20_OPT_1000/350.xyz`
+* **能量表**：`data/preproc_out/energies_nohash.csv`（用于取 `DeltaE` 与能量分桶）
+* **扰动强度与个数**（可改）：
+
+  * 每次随机扰动 `k ∈ {1,2,4,8}` 个原子
+  * 位移幅度 `σ ∈ {0.01, 0.02, 0.03, 0.05, 0.08} Å`
+  * 每组重复 `repeats = 50`
+* **逐原子“刚度”**：使用小扰动（如 `σ=0.01 Å`，默认 50 次重复）估计每个原子 i 的平均 |ΔE|，作为 `K_i`
+
+---
+
+## 一键运行（示例命令）
+
+> 在仓库根目录执行；Windows MINGW64 建议使用**单行命令**以避免换行符问题。
+
+### 1) KD-only 模型（你当前最优）
+
+单行：
+
+```bash
+PYTHONNOUSERSITE=1 ./.conda_env/python.exe models/gnn/schnet/task3_sensitivity.py --energies_csv data/preproc_out/energies_nohash.csv --xyz_dir data/raw/Au20_OPT_1000 --model_path runs/gnn_schnet_kd/fold1_batched/model_fold1.pt --hidden_dim 128 --n_blocks 4 --n_rbf 64 --rcut 6.0 --k_list 1 2 4 8 --sigma_list 0.01 0.02 0.03 0.05 0.08 --repeats 50 --batch_size 512 --make_plots --out_dir runs/task3_kdonly --device cuda
+```
+
+### 2) 若你也训练了 KD+VKD 模型（可做对比）
+
+```bash
+PYTHONNOUSERSITE=1 ./.conda_env/python.exe models/gnn/schnet/task3_sensitivity.py --energies_csv data/preproc_out/energies_nohash.csv --xyz_dir data/raw/Au20_OPT_1000 --model_path runs/gnn_schnet_kd_vkd/fold1/model_fold1.pt --hidden_dim 128 --n_blocks 4 --n_rbf 64 --rcut 6.0 --k_list 1 2 4 8 --sigma_list 0.01 0.02 0.03 0.05 0.08 --repeats 50 --batch_size 512 --make_plots --out_dir runs/task3_kd_vkd --device cuda
+```
+
+---
+
+## 产物说明（放在 `--out_dir`）
+
+以 `runs/task3_kdonly/` 为例：
+
+### 1) 表格（CSV）
+
+* `sensitivity_samples.csv`
+  每一次扰动的**逐样本记录**：
+  `sigma, k, repeat, perturbed_atom_indices, rmsd, y_base, y_pred, dE, abs_dE`
+
+  * `rmsd`：与基准结构的 RMSD（Å）
+  * `dE = y_pred - y_base`；`abs_dE = |dE|`
+
+* `sensitivity_summary.csv`（**核心表**）
+  各 `(sigma, k)` 的汇总统计：
+  `MAE(|ΔE|), RMSE(ΔE), mean(rmsd), std(abs_dE), n`
+
+* `global_K_small_sigma.csv`
+  小扰动区间（如 σ=0.01）对整体的**能量灵敏度**估计（N 次平均 |ΔE|）
+
+* `site_stiffness.csv`
+  **逐原子“刚度” K_i**（小扰动、固定 repeats 的 |ΔE| 平均）：
+  `atom_index, K_i`
+
+  > K_i 越大，说明该原子的局部位移对能量影响越大（“更软/敏感”）。
+
+### 2) 可视化（PNG）
+
+* `box_absdE_by_sigma_k*.png`
+  按 `σ` 分组、不同 `k` 的 |ΔE| 箱线图（看**扰动强度-能量响应**）
+
+* `scatter_absdE_vs_rmsd.png`
+  `|ΔE|` 对 `RMSD` 的散点图（可直观看**几何变化与能量变化的相关性**）
+
+### 3) 3D“刚度”热力图（VMD/ASE）
+
+目录：`viz/`
+
+* `au20_Ki.pdb`：包含一个自定义 `b-factor` 字段存放 K_i（单位随 |ΔE|）
+* `au20_Ki_vmd.tcl`：VMD 脚本，加载后自动按 K_i 着色、设置球半径与配色
+* `au20_Ki_3D.png`：已渲染好的 3D 截图（VMD 批处理生成）
+* `au20_Ki_top_bottom_sites.csv`：K_i 从大到小排序的 Top-N / Bottom-N 索引
