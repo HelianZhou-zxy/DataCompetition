@@ -50,13 +50,12 @@ DataCompetition/
 
 
 ```bash
-# Git Bash 下示例（Windows CMD 的换行符需要用 ^，见下文提示）
-PYTHONNOUSERSITE=1 "/d/DataComp/DataCompetition/.conda_env/python.exe" -m pip install -U \
-  numpy pandas scipy scikit-learn ase dscribe matplotlib joblib tqdm packaging typing_extensions
+# 安装项目依赖（CPU 也能跑）
+pip install -r requirements.txt
 
-# 有 CUDA 时建议装对应 PyTorch（如 cu121）
-PYTHONNOUSERSITE=1 "/d/DataComp/DataCompetition/.conda_env/python.exe" -m pip install -U \
-  torch --index-url https://download.pytorch.org/whl/cu121
+# 若机器有 NVIDIA GPU，且驱动兼容 CUDA 12.x，可安装 CUDA 12.1 对应的 PyTorch 轮子
+pip install -U torch --index-url https://download.pytorch.org/whl/cu121
+
 ```
 
 ## 1) 数据放置
